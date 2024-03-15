@@ -18,6 +18,7 @@ const Book = (data) => {
         favorite = false,
         fileCover = ``,
         fileName = ``,
+        fileBook = ``,
     } = data;
 
     const book = {
@@ -28,21 +29,21 @@ const Book = (data) => {
         favorite,
         fileCover,
         fileName,
+        fileBook,
     };
 
     return book;
 };
 
-books.push(Book({ title: `Гарри Поттер`, description: `Итория про Поттера` }));
+books.push(
+    Book({ title: `Гарри Поттер`, description: `Итория про Поттера`, fileBook: `name.pdf` })
+);
 books.push(Book({ title: `Леди и бродяга`, description: `Итория про Леди и бродяга` }));
 
 const app = express();
+app.use(express.json()).listen(process.env.PORT);
 
-app.use(`/`, routeIndex);
-app.use(`/api/books`, routeBooks);
-app.use(`/api/user`, routeUser);
+app.use(`/`, routeIndex).use(`/api/books`, routeBooks).use(`/api/user`, routeUser);
 
-app.use(express.json());
-app.listen(process.env.PORT);
-
-module.exports = Book;
+exports.Book = Book;
+exports.books = books;

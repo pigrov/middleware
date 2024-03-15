@@ -1,53 +1,76 @@
-const express = require(`express`);
-const router = express.Router();
+const { Router } = require(`express`);
+const router = Router();
+const inx = require(`../index`);
+const path = require(`path`);
+const fileMulter = require("../middleware/file");
 
 router
-    .get(`/`, (rq, rs) => {
-        rs.json(books);
+    .get(`/`, (req, res) => {
+        res.json(inx.books);
     })
-    .get(`/:id`, (rq, rs) => {
-        const { id } = rq.params;
-        const book = books.filter((x) => x.id == id)[0];
+    .get(`/:id`, (req, res) => {
+        const { id } = req.params;
+        const book = inx.books.filter((x) => x.id == id)[0];
 
-        !book && rs.status(404);
-        rs.json(book || { result: `error`, message: `book not found` });
+        !book && res.status(404);
+        res.json(book || { result: `error`, message: `book not found` });
     })
-    .post(`/`, (rq, rs) => {
-        const book = Book(rq.body);
-        books.push(book);
+    .get(`/:id/download`, (req, res) => {
+        const { id } = req.params;
+        const book = inx.books.filter((x) => x.id == id)[0];
 
-        rs.json(book);
+        book
+            ? book.fileBook
+                ? res.download(path.join(__dirname, `..`, `upload-folder`, book.fileBook))
+                : res.json({ result: `error`, message: `file not found` })
+            : res.json({ result: `error`, message: `book not found` });
     })
 
-    .put(`/`, (rq, rs) => {
-        rs.json({ result: `error`, message: `id must set` });
+    .post(`/`, (req, res) => {
+        console.log(`body`, req);
+        const book = inx.Book(req.body);
+        inx.books.push(book);
+
+        res.json(book);
     })
-    .put(`/:id`, (rq, rs) => {
-        const { id } = rq.params;
-        const book = books.filter((x) => x.id == id)[0];
+    .post(`/upload`, fileMulter.single(`book`), (req, res) => {
+        if (req.file) {
+            const { path } = req.file;
+            inx.books.push(inx.Book({ fileBook: path }));
+            res.json({ result: `success`, message: `uploaded`, path });
+        }
+    })
+
+    .put(`/`, (req, res) => {
+        res.json({ result: `error`, message: `id must set` });
+    })
+    .put(`/:id`, (req, res) => {
+        const { id } = req.params;
+        const book = inx.books.filter((x) => x.id == id)[0];
 
         book &&
-            books
+            inx.books
                 .filter((x) => x.id == id)
                 .map((o) => {
-                    Object.keys(rq.body).map((p) => {
-                        o[p] = rq.body[p];
+                    Object.keys(req.body).map((p) => {
+                        o[p] = req.body[p];
                     });
                 });
 
-        !book && rs.status(404);
-        rs.json({ result: book ? `updated` : `book not found` });
+        !book && res.status(404);
+        res.json({ result: book ? `updated` : `book not found` });
     })
-    .delete(`/`, (rq, rs) => {
-        rs.json({ result: `error`, message: `id must set` });
-    })
-    .delete(`/:id`, (rq, rs) => {
-        const { id } = rq.params;
-        const book = books.filter((x) => x.id == id)[0];
-        book && (books = books.filter((x) => x.id != id));
 
-        !book && rs.status(404);
-        rs.json({ result: book ? `success` : `book not found` });
+    .delete(`/`, (req, res) => {
+        res.json({ result: `error`, message: `id must set` });
+    })
+    .delete(`/:id`, (req, res) => {
+        const { id } = req.params;
+        const book = inx.books.filter((x) => x.id == id)[0];
+        book && (inx.books = inx.books.filter((x) => x.id != id));
+
+        !book && res.status(404);
+        res.json({ result: book ? `success` : `book not found` });
     });
 
 module.exports = router;
