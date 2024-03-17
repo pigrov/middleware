@@ -36,14 +36,27 @@ const Book = (data) => {
 };
 
 books.push(
-    Book({ title: `Гарри Поттер`, description: `Итория про Поттера`, fileBook: `name.pdf` })
+    Book({
+        title: `Гарри Поттер`,
+        authors: `Про Джоан Роулинг`,
+        description: `Итория про Поттера`,
+        fileBook: `name.pdf`,
+    })
 );
-books.push(Book({ title: `Леди и бродяга`, description: `Итория про Леди и бродяга` }));
+books.push(
+    Book({
+        title: `Леди и бродяга`,
+        authors: `Уорд Грин, Эрдман Пеннер, Дон Дагради`,
+        description: `Итория про Леди и бродяга`,
+    })
+);
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json()).listen(process.env.PORT);
+app.set(`view engine`, `ejs`);
 
-app.use(`/`, routeIndex).use(`/api/books`, routeBooks).use(`/api/user`, routeUser);
+app.use(`/`, routeIndex).use(`/books`, routeBooks).use(`/user`, routeUser);
 
 exports.Book = Book;
 exports.books = books;
