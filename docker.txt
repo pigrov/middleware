@@ -1,0 +1,240 @@
+Задание 1 - Docker CLI
+________________________________________________________________________
+PS V:\middleware> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS V:\middleware> ls
+
+
+    Каталог: V:\middleware
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        15.03.2024     16:45                middleware
+d-----        17.03.2024     11:40                node_modules
+d-----        12.03.2024     22:17                router
+d-----        15.03.2024     11:20                upload-folder
+d-----        17.03.2024     10:42                views
+-a----        11.03.2024     23:35              9 .env
+-a----        10.03.2024     15:55           1282 .gitignore
+-a----        17.03.2024     11:53           1466 index.js
+-a----        17.03.2024     11:40          59381 package-lock.json
+-a----        17.03.2024     11:41            507 package.json
+
+
+PS V:\middleware>  docker run --name pinger -it busybox ping -n 7 netology.ru
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+7b2699543f22: Pull complete
+Digest: sha256:650fd573e056b679a5110a70aabeb01e26b76e545ec4b9c70a9523f2dfaf18c6
+Status: Downloaded newer image for busybox:latest
+BusyBox v1.36.1 (2023-05-18 22:34:17 UTC) multi-call binary.
+
+Usage: ping [OPTIONS] HOST
+
+Send ICMP ECHO_REQUESTs to HOST
+
+        -4,-6           Force IP or IPv6 name resolution
+        -c CNT          Send only CNT pings
+        -s SIZE         Send SIZE data bytes in packets (default 56)
+        -i SECS         Interval
+        -A              Ping as soon as reply is received
+        -t TTL          Set TTL
+        -I IFACE/IP     Source interface or IP address
+        -W SEC          Seconds to wait for the first response (default 10)
+                        (after all -c CNT packets are sent)
+        -w SEC          Seconds until ping exits (default:infinite)
+                        (can exit earlier with -c CNT)
+        -q              Quiet, only display output at start/finish
+        -p HEXBYTE      Payload pattern
+PS V:\middleware>  docker run --name pinger -it busybox ping -c 7 netology.ru
+docker: Error response from daemon: Conflict. The container name "/pinger" is already in use by container "8d83928933c37b1d08709698f0bc34192882e913b2ab954fa70c6bcbcae61956". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+PS V:\middleware> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS V:\middleware> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS V:\middleware> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS V:\middleware>  docker run --name pinger -it busybox ping -c 7 netology.ru
+PING netology.ru (188.114.98.229): 56 data bytes
+64 bytes from 188.114.98.229: seq=0 ttl=63 time=41.647 ms
+64 bytes from 188.114.98.229: seq=1 ttl=63 time=41.540 ms
+64 bytes from 188.114.98.229: seq=2 ttl=63 time=41.908 ms
+64 bytes from 188.114.98.229: seq=3 ttl=63 time=41.348 ms
+64 bytes from 188.114.98.229: seq=4 ttl=63 time=40.912 ms
+64 bytes from 188.114.98.229: seq=5 ttl=63 time=41.179 ms
+64 bytes from 188.114.98.229: seq=6 ttl=63 time=41.231 ms
+
+--- netology.ru ping statistics ---
+7 packets transmitted, 7 packets received, 0% packet loss
+round-trip min/avg/max = 40.912/41.395/41.908 ms
+PS V:\middleware> docker pinger start
+docker: 'pinger' is not a docker command.
+See 'docker --help'
+PS V:\middleware> docker pinger run  
+docker: 'pinger' is not a docker command.
+See 'docker --help'
+PS V:\middleware> docker start pinger
+pinger
+PS V:\middleware> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS V:\middleware> docker start pinger
+pinger
+PS V:\middleware> docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS        PORTS     NAMES
+2eb38988251a   busybox   "ping -c 7 netology.…"   About a minute ago   Up 1 second             pinger
+PS V:\middleware> docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS                     PORTS     NAMES
+2eb38988251a   busybox   "ping -c 7 netology.…"   About a minute ago   Exited (0) 7 seconds ago             pinger
+PS V:\middleware> docker logs pinger 
+PING netology.ru (188.114.98.229): 56 data bytes
+64 bytes from 188.114.98.229: seq=0 ttl=63 time=41.647 ms
+64 bytes from 188.114.98.229: seq=1 ttl=63 time=41.540 ms
+64 bytes from 188.114.98.229: seq=2 ttl=63 time=41.908 ms
+64 bytes from 188.114.98.229: seq=3 ttl=63 time=41.348 ms
+64 bytes from 188.114.98.229: seq=4 ttl=63 time=40.912 ms
+64 bytes from 188.114.98.229: seq=5 ttl=63 time=41.179 ms
+64 bytes from 188.114.98.229: seq=6 ttl=63 time=41.231 ms
+
+--- netology.ru ping statistics ---
+7 packets transmitted, 7 packets received, 0% packet loss
+round-trip min/avg/max = 40.912/41.395/41.908 ms
+PING netology.ru (188.114.98.229): 56 data bytes
+64 bytes from 188.114.98.229: seq=0 ttl=63 time=42.447 ms
+64 bytes from 188.114.98.229: seq=1 ttl=63 time=42.654 ms
+64 bytes from 188.114.98.229: seq=2 ttl=63 time=41.972 ms
+64 bytes from 188.114.98.229: seq=3 ttl=63 time=42.924 ms
+64 bytes from 188.114.98.229: seq=4 ttl=63 time=42.314 ms
+64 bytes from 188.114.98.229: seq=5 ttl=63 time=42.889 ms
+64 bytes from 188.114.98.229: seq=6 ttl=63 time=42.175 ms
+
+--- netology.ru ping statistics ---
+7 packets transmitted, 7 packets received, 0% packet loss
+round-trip min/avg/max = 41.972/42.482/42.924 ms
+PING netology.ru (188.114.98.229): 56 data bytes
+64 bytes from 188.114.98.229: seq=0 ttl=63 time=40.728 ms
+64 bytes from 188.114.98.229: seq=1 ttl=63 time=45.984 ms
+64 bytes from 188.114.98.229: seq=2 ttl=63 time=42.251 ms
+64 bytes from 188.114.98.229: seq=3 ttl=63 time=41.664 ms
+64 bytes from 188.114.98.229: seq=4 ttl=63 time=41.497 ms
+64 bytes from 188.114.98.229: seq=5 ttl=63 time=41.335 ms
+64 bytes from 188.114.98.229: seq=6 ttl=63 time=41.764 ms
+
+--- netology.ru ping statistics ---
+7 packets transmitted, 7 packets received, 0% packet loss
+round-trip min/avg/max = 40.728/42.174/45.984 ms
+PS V:\middleware> docker rm pinger  
+pinger
+PS V:\middleware> docker ps -a      
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS V:\middleware> docker rm $(docker ps -a -q)
+"docker rm" requires at least 1 argument.
+See 'docker rm --help'.
+
+Usage:  docker rm [OPTIONS] CONTAINER [CONTAINER...]
+
+Remove one or more containers
+PS V:\middleware> docker ps -a    
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS V:\middleware> docker rmi busybox          
+Untagged: busybox:latest
+Untagged: busybox@sha256:650fd573e056b679a5110a70aabeb01e26b76e545ec4b9c70a9523f2dfaf18c6
+Deleted: sha256:ba5dc23f65d4cc4a4535bce55cf9e63b068eb02946e3422d3587e8ce803b6aab
+Deleted: sha256:95c4a60383f7b6eb6f7b8e153a07cd6e896de0476763bef39d0f6cf3400624bd
+PS V:\middleware> 
+
+Задание 2 - Environment Variables
+________________________________________________________________________
+PS V:\middleware> docker run --name mynode  -it -e NAME=DMITRY -e SURNAME=PIGROV  node  
+Unable to find image 'node:latest' locally
+latest: Pulling from library/node
+71215d55680c: Pull complete
+3cb8f9c23302: Pull complete
+5f899db30843: Pull complete
+567db630df8d: Pull complete
+f4ac4e9f5ffb: Pull complete
+375735fcaa7a: Pull complete
+c12db77023cd: Pull complete
+ac50344c1606: Pull complete
+Digest: sha256:b9ccc4aca32eebf124e0ca0fd573dacffba2b9236987a1d4d2625ce3c162ecc8
+Status: Downloaded newer image for node:latest
+Welcome to Node.js v21.7.1.
+Type ".help" for more information.
+> console.log(process.env.NAME)
+DMITRY
+undefined
+> console.log('Привет, ', process.env.NAME, process.env.SURNAME)
+Привет,  DMITRY PIGROV
+undefined
+>
+(To exit, press Ctrl+C again or Ctrl+D or type .exit)
+>
+PS V:\middleware> docker rm mynode
+mynode
+PS V:\middleware> docker rmi node   
+Untagged: node:latest
+Untagged: node@sha256:b9ccc4aca32eebf124e0ca0fd573dacffba2b9236987a1d4d2625ce3c162ecc8
+Deleted: sha256:c3978d05bc68452fec21b7e4e76399380f4e7505d7f9f034c5981678732f6e96
+Deleted: sha256:dc94ebc9ec1a98bd29c3c84014ed4bf85bf944d9298aa5c7328a98f257836427
+Deleted: sha256:32dbf0d3fd980ffba8dd592281cc1f4daef909c84f5d55aeb83a37eaf69d92d5
+Deleted: sha256:74852d5ffe9c9fed9ddfb30ddb2a2914769b42987e1543c04c309127e499f6cf
+Deleted: sha256:529e9f64ea6c0660f0ee3dd29c98367d85ed90563d7767137113565703dceadc
+Deleted: sha256:83aa18cbe4a99007ea67f47ce6bec0756273775dac527ebaf8a0c224193f2b95
+Deleted: sha256:9a05df6eae3b21d822cd02d428c88c05ab67d5e8d11014884742ab22b7a44a7a
+Deleted: sha256:312ee2ba731589de51a59f88b05a206c45b3f07d7ac7c87eca16c0fef7475d74
+Deleted: sha256:0238a17903242951b944d01ab189a30ac237c715121f14565a2af8b078415d97
+
+
+Задание 3 - Volumes
+________________________________________________________________________
+
+
+PS V:\middleware> docker run --rm -d --name node1 -it -e NAME=DMITRY -e SURNAME=PIGROV -v V:\middleware\dockerdata\first  node:20.10 sleep infinity  
+acd537e41dc37cd1a638d4985bff31bcb00ed9160359f66b2c162ff8afab265f
+PS V:\middleware> docker ps
+CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS     NAMES
+acd537e41dc3   node:20.10   "docker-entrypoint.s…"   26 seconds ago   Up 25 seconds             node1
+PS V:\middleware> docker exec -it node1 ls /first
+ls: cannot access '/first': No such file or directory
+PS V:\middleware> docker exec -it node1 ls /dockerdata
+ls: cannot access '/dockerdata': No such file or directory
+PS V:\middleware> docker exec -it node1 ls /dockerdata
+ls: cannot access '/dockerdata': No such file or directory
+PS V:\middleware> docker exec -it node1 ls /first     
+ls: cannot access '/first': No such file or directory
+PS V:\middleware> docker exec -it node1 ls /first
+ls: cannot access '/first': No such file or directory
+PS V:\middleware> docker exec -it node1 ls /dockerdata
+ls: cannot access '/dockerdata': No such file or directory
+PS V:\middleware> docker exec -it node1 ls /          
+'V:\middleware\dockerdata\first'   bin   boot   dev   etc   home   lib   lib32   lib64   libx32   media   mnt   opt   proc   root   run   sbin   srv   sys   tmp   usr   var
+PS V:\middleware> docker exec -it node1 /bin/sh
+# ls
+'V:\middleware\dockerdata\first'   bin   boot   dev   etc   home   lib   lib32   lib64   libx32   media   mnt   opt   proc   root   run   sbin   srv   sys   tmp   usr   var
+# touch /test2.log
+# touch txt.txt   
+# touch /first/txt.log
+touch: cannot touch '/first/txt.log': No such file or directory
+# touch /txt.log
+# ls  
+'V:\middleware\dockerdata\first'   boot   etc    lib     lib64    media   opt    root   sbin   sys         tmp       txt.txt   var
+ bin                               dev    home   lib32   libx32   mnt     proc   run    srv    test2.log   txt.log   usr
+#
+PS V:\middleware> docker stop node1 
+
+
+
+PS V:\middleware> docker run --rm -d --name node2 -it -e NAME=DMITRY -e SURNAME=PIGROV -v V:\middleware\dockerdata\second  node:20.10 sleep infinity 
+cbc3ddd54a422cc914c970431b45aac4413c58979bee534a3c70e91906af868a
+PS V:\middleware> docker exec -it node2 ls
+'V:\middleware\dockerdata\second'   bin   boot   dev   etc   home   lib   lib32   lib64   libx32   media   mnt   opt   proc   root   run   sbin   srv   sys   tmp   usr   var
+PS V:\middleware> docker exec -it node2 /bin/sh
+# ls
+'V:\middleware\dockerdata\second'   bin   boot   dev   etc   home   lib   lib32   lib64   libx32   media   mnt   opt   proc   root   run   sbin   srv   sys   tmp   usr   var
+# touch /test.log
+# ls  
+'V:\middleware\dockerdata\second'   bin   boot   dev   etc   home   lib   lib32   lib64   libx32   media   mnt   opt   proc   root   run   sbin   srv   sys   test.log   tmp   usr   var
+# 
+PS V:\middleware> docker stop node2            
+node2
