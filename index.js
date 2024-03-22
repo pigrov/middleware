@@ -1,8 +1,12 @@
 const express = require(`express`);
+const mongoose = require(`mongoose`);
 
 const routeIndex = require(`./router/index`);
 const routeBooks = require(`./router/books`);
 const routeUser = require(`./router/user`);
+
+const MONGO_URL = process.env.MONGO_URL || `mongodb://root:example@mongo:27017/`;
+(async () => await mongoose.connect(MONGO_URL))();
 
 const { v4: uuid } = require(`uuid`);
 
